@@ -1,2 +1,2 @@
 # NNUCIDataset
-a neural network made purely in numpy and tested on the UCI dataset found at https://www.kaggle.com/ronitf/heart-disease-uci
+a neural network written in Tensorflow2.0 using the UCI dataset found at https://www.kaggle.com/ronitf/heart-disease-uci
