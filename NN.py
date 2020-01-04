@@ -5,11 +5,11 @@ from tensorflow import keras
 from matrixpreprocess import get_normalized_data_set
 from matplotlib import pyplot as plt
 
-def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01):
+def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutrate=0.5):
     model = keras.Sequential([
     Dense(numfirst, activation='relu',
                  kernel_regularizer=l2(l=reg_value), input_shape = (12,)),
-    Dropout(0.5),
+    Dropout(dropoutrate),
     Dense(numsecond, activation='relu',kernel_regularizer=l2(l=reg_value)),
     Dense(1, activation='sigmoid', kernel_regularizer=l2(l=reg_value))])
     model.compile(optimizer='adam',
