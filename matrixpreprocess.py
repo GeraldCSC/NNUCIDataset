@@ -1,32 +1,38 @@
 import numpy as np
 import pandas as pd
-import math
-data = pd.read_csv("heart.csv") 
-del data['sex']
-targets = data['target'].to_numpy()
-del data['target'] 
-array = data.to_numpy()
-heart_attack_data = array[:165,:]
-heart_attack_label = targets[:165]
-no_heartattack_data = array[165:,:]
-no_heartattack_label = targets[165:]
-index_no_heart_attack = np.random.permutation(np.arange(no_heartattack_label.shape[0]))
-index_yes_heart_attack = np.random.permutation(np.arange(heart_attack_label.shape[0]))
-heart_attack_data = heart_attack_data[index_yes_heart_attack]
-heart_attack_label = heart_attack_label[index_yes_heart_attack]
-no_heartattack_data = no_heartattack_data[index_no_heart_attack]
-no_heartattack_label = no_heartattack_label[index_no_heart_attack]
-splitheartattack = math.ceil(heart_attack_label.shape[0] * 0.7)
-split_noheartattack = math.ceil(no_heartattack_label.shape[0] * 0.7)
-heartattacktrain , heartattacktrainlabel = heart_attack_data[:splitheartattack,:] , heart_attack_label[:splitheartattack]
-heartattacktest , heartattacktestlabel = heart_attack_data[splitheartattack:,:], heart_attack_label[splitheartattack:]
-noattacktrain , noattacktrainlabel = no_heartattack_data[:split_noheartattack,:] , no_heartattack_label[:split_noheartattack]
-noattacktest , noattacktestlabel = no_heartattack_data[split_noheartattack:,:], no_heartattack_label[split_noheartattack:]
-train = np.vstack((heartattacktrain, noattacktrain))
-train_label = np.concatenate((heartattacktrainlabel, noattacktrainlabel))
-test = np.vstack((heartattacktest, noattacktest))
-test_label = np.concatenate((heartattacktestlabel, noattacktestlabel))
-np.save("train_data", train)
-np.save("train_label", train_label)
-np.save("test_data", test)
-np.save("test_label", test_label)
+from sklearn.model_selection import train_test_split
+
+def getdata(path):
+    data = pd.read_csv(path) 
+    #we treat sex as a protected variable, so it is deleted from our features
+    del data['sex']
+    labels = data['target'].to_numpy()
+    del data['target'] 
+    data_matrix = data.to_numpy()
+    return data_matrix , labels
+
+def get_train_test_split(data_matrix, labels, test_size):
+    X_train, X_test, y_train, y_test = train_test_split(
+        data_matrix, labels, test_size=0.33, random_state=42)
+    return X_train, y_train, X_test, y_test
+
+def _normalizecol(colarray):
+    mean = np.mean(colarray)
+    sd = np.std(colarray)
+    colarray = (colarray - mean) / sd
+    return colarray.flatten()
+
+def normalizematrix(X_train, X_test,indices_to_norm):
+    for item in indices_to_norm:
+        X_train[:,item] = _normalizecol(X_train[:,item])
+        X_test[:,item] = _normalizecol(X_test[:,item])
+    return X_train, X_test
+
+def get_normalized_data_set(path, test_size, indices_to_norm):
+    data_matrix, labels = getdata(path)
+    X_train, y_train, X_test, y_test = get_train_test_split(data_matrix, labels, test_size)
+    X_train, X_test = normalizematrix(X_train, X_test, indices_to_norm)
+    return X_train, y_train, X_test, y_test
+
+if __name__ == "__main__":
+    pass
