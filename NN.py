@@ -23,7 +23,7 @@ def train_and_eval(model, X_train, y_train, X_eval, y_eval, numepoch):
     return history_eval[1]
 
 def kfoldcrossval(data,data_label,model, numepoches= 500,k = 5):
-    kf = KFold(n_splits = kvalue)
+    kf = KFold(n_splits = k)
     kf.get_n_splits(data)
     result = []
     for train_index, test_index in kf.split(data):
