@@ -7,12 +7,14 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import KFold
 
 
-def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutrate = 0.5):
+def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutrate = 0.5, 
+             dropoutratelayer2=0.2):
     model = keras.Sequential([
     Dense(numfirst, activation='relu',
                  kernel_regularizer=l2(l=reg_value), input_shape = (12,)),
     Dropout(dropoutrate),
     Dense(numsecond, activation='relu',kernel_regularizer=l2(l=reg_value)),
+    Dropout(dropoutratelayer2), 
     Dense(1, activation='sigmoid', kernel_regularizer=l2(l=reg_value))])
     model.compile(optimizer='adam',
               loss='binary_crossentropy',
