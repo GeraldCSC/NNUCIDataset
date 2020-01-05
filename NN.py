@@ -6,7 +6,6 @@ from matrixpreprocess import get_normalized_data_set
 from matplotlib import pyplot as plt
 from sklearn.model_selection import KFold
 
-
 def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutrate = 0.5, 
              dropoutratelayer2=0.2):
     model = keras.Sequential([
@@ -22,10 +21,23 @@ def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutrate = 0.
     return model
 
 
+def plot(history):
+    plt.plot(history.history['acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.show()
+    plt.plot(history.history['loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.show()
+
 def train_and_eval(model, X_train, y_train, X_eval, y_eval, numepoch):
-    model.fit(X_train, y_train, epochs = numepoch)
-    history_eval = model.evaluate(X_eval, y_eval)
-    return history_eval[1]
+    history = model.fit(X_train, y_train, epochs = numepoch)
+    plot(history)
+    # history_eval = model.evaluate(X_eval, y_eval)
+    # return history_eval[1]
 
 
 def kfoldcrossval(data,data_label,model, numepoches= 500,k = 5):
@@ -42,5 +54,5 @@ def kfoldcrossval(data,data_label,model, numepoches= 500,k = 5):
 if __name__ == "__main__":
     X_train, y_train, X_test, y_test = get_normalized_data_set("heart.csv",0.33,[0,2,3,6])
     model = getmodel()
-    accuracy = train_and_eval(model, X_train, y_train, X_test, y_test, 500)
-    print(accuracy)
+    accuracy = train_and_eval(model, X_train, y_train, X_test, y_test, 1000)
+    # print(accuracy)
