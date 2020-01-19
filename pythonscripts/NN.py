@@ -6,7 +6,7 @@ from matrixpreprocess import get_normalized_data_set
 from matplotlib import pyplot as plt
 from sklearn.model_selection import KFold
 
-def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutratelayer1 = 0.5, 
+def getmodel(numfirst = 200, numsecond = 100, reg_value = 0.01, dropoutratelayer1 = 0.2, 
              dropoutratelayer2=0.2):
     model = keras.Sequential([
     Dense(numfirst, activation='relu',
@@ -67,6 +67,6 @@ def getbestmodel(X_train, y_train, epochs,reg_rate):
 
 if __name__ == "__main__":
     X_train, y_train, X_test, y_test =get_normalized_data_set("/Users/gerald/Documents/GitHub/NNUCIDataset/heart.csv",0.33,[0,2,3,6])
-    regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [500,1000],[0,0.01,0.1,0.2,0.5])
-    accuracy = evaluate(model, X_test,y_test) 
+    regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [500,1000],[0,0.001,0.01,0.1])
+    accuracy = evaluate(model, X_test,y_test)
     print(accuracy)
