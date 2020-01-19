@@ -34,8 +34,7 @@ def plot(history):
     plt.show()
 
 def train_and_eval(model, X_train, y_train, X_eval, y_eval, numepoch):
-    history = model.fit(X_train, y_train, epochs = numepoch)
-# plot(history)
+    history = model.fit(X_train, y_train, epochs = numepoch,verbose = 0)
     return evaluate(model,X_eval, y_eval)
 
 def evaluate(model,X_eval,y_eval):
@@ -63,15 +62,11 @@ def getbestmodel(X_train, y_train, epochs,reg_rate):
                 bestmodel = model
                 reg_to_use = reg
                 epoch_to_use = e
+                maxacc = mean_acc
     return reg_to_use, epoch_to_use,maxacc, bestmodel
 
 if __name__ == "__main__":
-    X_train, y_train, X_test, y_test =get_normalized_data_set("/Users/gerald/Documents/GitHub/NNUCIDataset/heart.csv",0.33,[0,2,3,6])
-
-    regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [800],[0, 0.001])
-# regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [1000],[0, 0.001,0.01,0.1])
-    print(regvalue)
-    print(epochvalue)
-# train_accuracy,model = getbestmodel(X_train, y_train, [200,300,400,500,800,1000],[0,0.1,0.2,0.5,0.9])
+    X_train, y_train, X_test, y_test =get_normalized_data_set("/home/gerald/Desktop/newfiles/NNUCIDataset/heart.csv",0.33,[0,2,3,6])
+    regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [500,1000],[0,0.01,0.1,0.2,0.5])
     accuracy = evaluate(model, X_test,y_test) 
     print(accuracy)
