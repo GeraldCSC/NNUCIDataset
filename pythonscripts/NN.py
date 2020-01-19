@@ -66,7 +66,7 @@ def getbestmodel(X_train, y_train, epochs,reg_rate):
     return reg_to_use, epoch_to_use,maxacc, bestmodel
 
 if __name__ == "__main__":
-    X_train, y_train, X_test, y_test =get_normalized_data_set("/home/gerald/Desktop/newfiles/NNUCIDataset/heart.csv",0.33,[0,2,3,6])
+    X_train, y_train, X_test, y_test =get_normalized_data_set("/Users/gerald/Documents/GitHub/NNUCIDataset/heart.csv",0.33,[0,2,3,6])
     regvalue , epochvalue,train_accuracy,model = getbestmodel(X_train, y_train, [500,1000],[0,0.01,0.1,0.2,0.5])
     accuracy = evaluate(model, X_test,y_test) 
     print(accuracy)
